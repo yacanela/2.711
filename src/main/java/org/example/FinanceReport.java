@@ -1,5 +1,8 @@
 package org.example;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class FinanceReport {
     private Payment[] payments;
     private String avtor;
@@ -16,7 +19,7 @@ public class FinanceReport {
     }
 
     public FinanceReport(String avtor, int dataDay, int dataMonth,
-                         int dataYear, Payment[] payments)  {
+                         int dataYear, Payment[] payments) {
         this.avtor = avtor;
         this.dataDay = dataDay;
         this.dataMonth = dataMonth;
@@ -46,6 +49,7 @@ public class FinanceReport {
     public String getAvtor() {
         return avtor;
     }
+
     public void setAvtor(String avtor) {
         this.avtor = avtor;
     }
@@ -53,6 +57,7 @@ public class FinanceReport {
     public int getDataDay() {
         return dataDay;
     }
+
     public void setDataDay(int dataDay) {
         this.dataDay = dataDay;
     }
@@ -60,6 +65,7 @@ public class FinanceReport {
     public int getDataMonth() {
         return dataMonth;
     }
+
     public void setDataMonth(int dataMonth) {
         this.dataMonth = dataMonth;
     }
@@ -67,6 +73,7 @@ public class FinanceReport {
     public int getDataYear() {
         return dataYear;
     }
+
     public void setDataYear(int dataYear) {
         this.dataYear = dataYear;
     }
@@ -108,5 +115,17 @@ public class FinanceReport {
         sb.append("]]");
 
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        FinanceReport that = (FinanceReport) o;
+        return dataDay == that.dataDay && dataMonth == that.dataMonth && dataYear == that.dataYear && Objects.deepEquals(payments, that.payments) && Objects.equals(avtor, that.avtor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Arrays.hashCode(payments), avtor, dataDay, dataMonth, dataYear);
     }
 }

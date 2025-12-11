@@ -1,5 +1,7 @@
 package org.example;
+
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class FinanceReportProcessorTest {
@@ -77,18 +79,10 @@ class FinanceReportProcessorTest {
         FinanceReport report = new FinanceReport("Автор", 15, 6, 2023, payments);
         FinanceReport result = FinanceReportProcessor.getPaymentsByLastName(report, 'А');
 
-        assertEquals("Автор", result.getAvtor());
-        assertEquals(15, result.getDataDay());
-        assertEquals(6, result.getDataMonth());
-        assertEquals(2023, result.getDataYear());
-    }
-
-    @Test
-    void testGetPaymentsLessThanAmountNullReport() {
-        FinanceReport result = FinanceReportProcessor.getPaymentsLessThanAmount(null, 10000);
-
-        assertNotNull(result);
-        assertEquals(0, result.getKolvoPlatezh());
+        assertEquals("Андреев Андрей", result.getPlat(0).getFio());
+        assertEquals(10, result.getPlat(0).getDay());
+        assertEquals(5, result.getPlat(0).getMonth());
+        assertEquals(2023, result.getPlat(0).getYear());
     }
 
     @Test
@@ -97,5 +91,27 @@ class FinanceReportProcessorTest {
         FinanceReport result = FinanceReportProcessor.getPaymentsLessThanAmount(report, 10000);
 
         assertEquals(0, result.getKolvoPlatezh());
+    }
+
+
+    @Test
+    void testGetPaymentsLessThanAmountEmptyReport2() {
+        Payment[] payments = {
+                new Payment("Андреев Андрей", 10, 5, 2023, 15050),
+                new Payment("Петров Павел", 12, 5, 2023, 20000),
+                new Payment("Андреева Мария", 15, 5, 2023, 5000),
+                new Payment("Сергеев Сергей", 18, 5, 2023, 30000)
+        };
+
+        FinanceReport report = new FinanceReport("Автор", 1, 1, 2023, payments);
+
+        Payment[] payments2 = {
+                new Payment("Андреев Андрей", 10, 5, 2023, 15050),
+                new Payment("Андреева Мария", 15, 5, 2023, 5000)
+        };
+
+        FinanceReport expected = new FinanceReport("Автор", 1, 1, 2023, payments2);
+
+        assertEquals(expected, FinanceReportProcessor.getPaymentsLessThanAmount(report, 16000));
     }
 }
